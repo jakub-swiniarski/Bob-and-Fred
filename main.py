@@ -62,6 +62,14 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.walking_left[self.counter_skin%3]
                 self.counter_skin += 1
 
+    def walk(self):
+        self.walking = True
+        self.animation_walking()
+        if self.right:
+            self.rect.x += 500 * dt
+        else:
+            self.rect.x -= 500 * dt
+
 sprite_list = pygame.sprite.Group()
 
 bob=Player()
@@ -76,7 +84,7 @@ rect_floor = image_floor.get_rect()
 rect_floor.x=0
 rect_floor.y=520
 
-pressed_keys = {"left": False, "right": False}
+pressed_keys_bob = {"left": False, "right": False}
 
 while True:
     for event in pygame.event.get():
@@ -84,20 +92,22 @@ while True:
             sys.exit()
 
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                pressed_keys["left"] = True
-            if event.key == pygame.K_RIGHT:
-                pressed_keys["right"] = True
-            if event.key == pygame.K_UP:
+            #bob
+            if event.key == pygame.K_a:
+                pressed_keys_bob["left"] = True
+            if event.key == pygame.K_d:
+                pressed_keys_bob["right"] = True
+            if event.key == pygame.K_SPACE:
                 if bob.rect.y > 389:
                     bob.jumping = True
                     bob.counter_jump=0
 
         elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                pressed_keys["left"] = False
-            if event.key == pygame.K_RIGHT:
-                pressed_keys["right"] = False
+            #bob
+            if event.key == pygame.K_a:
+                pressed_keys_bob["left"] = False
+            if event.key == pygame.K_d:
+                pressed_keys_bob["right"] = False
 
     bob.walking=False
 
@@ -106,20 +116,16 @@ while True:
     dt = now - prev_time
     prev_time = now
 
-    if pressed_keys["left"] and pressed_keys["right"]:
+    if pressed_keys_bob["left"] and pressed_keys_bob["right"]:
         bob.walking=False
     else:
-        if pressed_keys["left"]:
-            bob.walking=True
-            bob.right=False
-            bob.rect.x -= 500*dt
-            bob.animation_walking()
+        if pressed_keys_bob["left"]:
+            bob.right = False
+            bob.walk()
 
-        if pressed_keys["right"]:
-            bob.walking=True
-            bob.right=True
-            bob.rect.x += 500*dt
-            bob.animation_walking()
+        if pressed_keys_bob["right"]:
+            bob.right = True
+            bob.walk()
 
     if bob.walking==False:
         if bob.right:
