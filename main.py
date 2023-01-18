@@ -5,7 +5,7 @@ size=width,height=1280,720
 screen=pygame.display.set_mode(size)
 pygame.display.set_caption("Chernobyl Simulator")
 clock = pygame.time.Clock()
-#jestes malym ziomkiem musisz skakac robi parkour zeby zdobyc paliwo i musisz w czasie dostarczyc do reaktora, geiger counter i meltdown wymierzaja czas
+#napierdalasz sie z drugim ziomkiem
 prev_time=time.time()
 bg=90,90,90
 
